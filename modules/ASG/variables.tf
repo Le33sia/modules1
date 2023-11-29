@@ -25,7 +25,6 @@ variable "max_size" {}
 variable "min_size" {}
 variable "desired_capacity" {}
 variable "health_check_type" {}
-variable "target_group_arns" {}
 
 # Load Balancer
 variable "lb_name" {}
