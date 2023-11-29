@@ -35,7 +35,6 @@ module "ASG" {
   min_size              = 1
   desired_capacity      = 1
   health_check_type = "ELB"
-  target_group_arns     = []
 
   # Load Balancer
   lb_name                       = "LB"
