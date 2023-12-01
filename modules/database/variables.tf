@@ -3,10 +3,10 @@ variable "private_subnet1_id" {}
 variable "private_subnet2_id" {}
 
 variable "database_username" {
-  type    = string
+  type = string
 }
 variable "database_dbname" {
-  type    = string
+  type = string
 }
 variable "secrets_manager_secret_arn" {}
 variable "security_groups" {}

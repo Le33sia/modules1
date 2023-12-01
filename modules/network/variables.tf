@@ -18,21 +18,21 @@ variable "enable_dns_support" {
 }
 
 #subnets
-variable "Public_subnet1_cidr" {
+variable "public_subnet1_cidr" {
   description = "CIDR block for public 1st subnet"
   type        = string
   //type        = list(string)
 }
-variable "Public_subnet2_cidr" {
+variable "public_subnet2_cidr" {
   description = "CIDR block for public 2nd subnet"
   type        = string
 }
 
-variable "Private_subnet1_cidr" {
+variable "private_subnet1_cidr" {
   description = "CIDR blocks for 1st private subnet"
   type        = string
 }
-variable "Private_subnet2_cidr" {
+variable "private_subnet2_cidr" {
   description = "CIDR blocks for 2nd private subnet"
   type        = string
 }
