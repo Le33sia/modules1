@@ -1,10 +1,5 @@
 variable "public_subnets" {
 
-<<<<<<< HEAD
-variable "public_subnets" {
-
-=======
->>>>>>> 5a414d40ba8b957aa6985f554151a403a9647e3f
   default = {
     public_snet_1 = {
       cidr_block = "172.16.0.0/26",
