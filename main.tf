@@ -46,7 +46,6 @@ module "autoscaling_group_lb" {
 
 module "database" {
   source = "./modules/database"
-<<<<<<< HEAD
 
   db_instances               = var.db_instances
   secrets_manager_secret_arn = module.database.secrets_manager_secret_arn
@@ -58,15 +57,3 @@ module "database" {
 }
 
 
-
-=======
-
-  db_instances               = var.db_instances
-  secrets_manager_secret_arn = module.database.secrets_manager_secret_arn
-  security_groups            = module.autoscaling_group_lb.SGtemplate_id
-  vpc_id                     = module.network.vpc_id
-  private_subnets            = var.private_subnets
-  private_snet_1             = module.network.private_subnets.private_snet_1
-  private_snet_2             = module.network.private_subnets.private_snet_2
-}
->>>>>>> 5a414d40ba8b957aa6985f554151a403a9647e3f
