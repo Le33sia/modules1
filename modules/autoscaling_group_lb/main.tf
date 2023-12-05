@@ -91,11 +91,7 @@ resource "aws_autoscaling_group" "ASG" {
     id      = aws_launch_template.launch_templ.id
     version = "$Latest"
   }
-<<<<<<< HEAD:modules/autoscaling_group_lb/main.tf
   vpc_zone_identifier       = [var.public_snet_1, var.public_snet_2]
-=======
-  vpc_zone_identifier       = [var.public_subnet1_id]
->>>>>>> 5a414d40ba8b957aa6985f554151a403a9647e3f:modules/ASG/main.tf
   name                      = "ASG"
   health_check_grace_period = 300
   min_elb_capacity          = 0
@@ -110,11 +106,7 @@ resource "aws_lb" "my_alb" {
   name                             = var.lb_name
   internal                         = var.lb_internal
   load_balancer_type               = var.lb_load_balancer_type
-<<<<<<< HEAD:modules/autoscaling_group_lb/main.tf
   subnets                          = [var.public_snet_1, var.public_snet_2]
-=======
-  subnets                          = [var.public_subnet1_id, var.public_subnet2_id]
->>>>>>> 5a414d40ba8b957aa6985f554151a403a9647e3f:modules/ASG/main.tf
   enable_deletion_protection       = var.lb_enable_deletion_protection
   enable_http2                     = true
   enable_cross_zone_load_balancing = true
