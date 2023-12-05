@@ -6,74 +6,52 @@ terraform {
     }
   }
 }
-
+provider "aws" {
+  region     = "us-west-2"
+}
 module "network" {
-  source               = "./modules/network"
-  vpc_id               = module.network.vpc_id
-  public_subnet1_id    = module.network.public_subnet1_id
-  public_subnet2_id    = module.network.public_subnet2_id
-  private_subnet1_id   = module.network.private_subnet1_id
-  private_subnet2_id   = module.network.private_subnet2_id
-  vpc_cidr_block       = "172.16.0.0/16"
-  public_subnet1_cidr  = "172.16.0.0/26"
-  public_subnet2_cidr  = "172.16.0.64/26"
-  private_subnet1_cidr = "172.16.0.128/26"
-  private_subnet2_cidr = "172.16.0.192/26"
-  availability_zones   = ["us-west-2a", "us-west-2b"]
+  source = "./modules/network"
+
+  vpc_cidr_block  = var.vpc_cidr_block
+  public_subnets  = var.public_subnets
+  private_subnets = var.private_subnets
 }
 
-module "ASG" {
-  source = "./modules/ASG"
-
+module "autoscaling_group_lb" {
+  source         = "./modules/autoscaling_group_lb"
+  public_snet_1  = module.network.public_subnets.public_snet_1
+  public_snet_2  = module.network.public_subnets.public_snet_2
+  vpc_id         = module.network.vpc_id
+  public_subnets = var.public_subnets
   # Launch Template
-  instance_type   = "t2.micro"
-  security_groups = module.ASG.SGtemplate_id
-  image_id        = module.ASG.image_id
-
+  instance_type   = var.instance_type
+  security_groups = module.autoscaling_group_lb.SGtemplate_id
+  image_id        = module.autoscaling_group_lb.image_id
   # Auto Scaling
-  max_size          = 1
-  min_size          = 1
-  desired_capacity  = 1
-  health_check_type = "ELB"
-
+  max_size          = var.max_size
+  min_size          = var.min_size
+  desired_capacity  = var.desired_capacity
+  health_check_type = var.health_check_type
   # Load Balancer
-  lb_name                       = "LB"
-  lb_internal                   = false
-  lb_load_balancer_type         = "application"
-  lb_enable_deletion_protection = false
-  lb_target_port                = 80
-  lb_protocol                   = "HTTP"
-  lb_listener_port              = 80
-  lb_listener_protocol          = "HTTP"
-
-  vpc_id                     = module.network.vpc_id
-  public_subnet1_id          = module.network.public_subnet1_id
-  public_subnet2_id          = module.network.public_subnet2_id
-  secrets_manager_secret_arn = module.database.secrets_manager_secret_arn
-
-
+  lb_name                       = var.lb_name
+  lb_internal                   = var.lb_internal
+  lb_load_balancer_type         = var.lb_load_balancer_type
+  lb_enable_deletion_protection = var.lb_enable_deletion_protection
+  lb_target_port                = var.lb_target_port
+  lb_protocol                   = var.lb_protocol
+  lb_listener_port              = var.lb_listener_port
+  lb_listener_protocol          = var.lb_listener_protocol
+  secrets_manager_secret_arn    = module.database.secrets_manager_secret_arn
 }
 
 module "database" {
   source = "./modules/database"
-  #database
-  allocated_storage    = 10
-  engine               = "mysql"
-  engine_version       = "8.0.33"
-  instance_class       = "db.t3.micro"
-  identifier           = "database-1"
-  parameter_group_name = "default.mysql8.0"
-  multi_az             = false
-  storage_type         = "gp2"
-  skip_final_snapshot  = true
-  vpc_id               = module.network.vpc_id
-  private_subnet1_id   = module.network.private_subnet1_id
-  private_subnet2_id   = module.network.private_subnet2_id
-  #secret manager
-  database_username          = "admin"
-  database_dbname            = "demodb"
+
+  db_instances               = var.db_instances
   secrets_manager_secret_arn = module.database.secrets_manager_secret_arn
-
-  security_groups = module.ASG.SGtemplate_id
+  security_groups            = module.autoscaling_group_lb.SGtemplate_id
+  vpc_id                     = module.network.vpc_id
+  private_subnets            = var.private_subnets
+  private_snet_1             = module.network.private_subnets.private_snet_1
+  private_snet_2             = module.network.private_subnets.private_snet_2
 }
-
