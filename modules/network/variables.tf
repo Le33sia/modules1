@@ -18,29 +18,5 @@ variable "enable_dns_support" {
 }
 
 #subnets
-<<<<<<< HEAD
 variable "public_subnets" {}
 variable "private_subnets" {}
-=======
-variable "public_subnet1_cidr" {
-  description = "CIDR block for public 1st subnet"
-  type        = string
-  //type        = list(string)
-}
-variable "public_subnet2_cidr" {
-  description = "CIDR block for public 2nd subnet"
-  type        = string
-}
-
-variable "private_subnet1_cidr" {
-  description = "CIDR blocks for 1st private subnet"
-  type        = string
-}
-variable "private_subnet2_cidr" {
-  description = "CIDR blocks for 2nd private subnet"
-  type        = string
-}
->>>>>>> 5a414d40ba8b957aa6985f554151a403a9647e3f
-
-
-
