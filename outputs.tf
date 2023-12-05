@@ -20,4 +20,3 @@ output "private_snet_2" {
 output "vpc_id" {
   value = module.network.vpc_id
 }
->>>>>>> 5a414d40ba8b957aa6985f554151a403a9647e3f
